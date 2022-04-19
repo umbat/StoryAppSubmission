@@ -21,7 +21,6 @@ class StoryAdapter : RecyclerView.Adapter<StoryAdapter.HomeViewHolder>() {
     fun setList(users: ArrayList<StoryModel>) {
         list.clear()
         list.addAll(users)
-        notifyDataSetChanged()
     }
 
     inner class HomeViewHolder(val binding: ItemListStoryBinding) : RecyclerView.ViewHolder(binding.root) {

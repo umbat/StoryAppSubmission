@@ -15,6 +15,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.umbat.storyappsubmission.api.ActivityResponses
+import com.umbat.storyappsubmission.api.ApiConfig
 import com.umbat.storyappsubmission.api.ApiService
 import com.umbat.storyappsubmission.databinding.FragmentAddStoryBinding
 import okhttp3.MediaType.Companion.toMediaType
@@ -137,12 +139,11 @@ class AddStoryFragment : Fragment() {
                 requestImageFile
             )
 
-            val service = ApiService.ApiConfig()
-                .getApiService().uploadImage(imageMultipart, description)
-            service.enqueue(object : Callback<ApiService.FileUploadResponse> {
+            val service = ApiConfig().getApiService().uploadImage(imageMultipart, description)
+            service.enqueue(object : Callback<ActivityResponses.FileUploadResponse> {
                 override fun onResponse(
-                    call: Call<ApiService.FileUploadResponse>,
-                    response: Response<ApiService.FileUploadResponse>
+                    call: Call<ActivityResponses.FileUploadResponse>,
+                    response: Response<ActivityResponses.FileUploadResponse>
                 ) {
                     if (response.isSuccessful) {
                         val responseBody = response.body()
@@ -153,7 +154,7 @@ class AddStoryFragment : Fragment() {
                         Toast.makeText(requireActivity(), response.message(), Toast.LENGTH_SHORT).show()
                     }
                 }
-                override fun onFailure(call: Call<ApiService.FileUploadResponse>, t: Throwable) {
+                override fun onFailure(call: Call<ActivityResponses.FileUploadResponse>, t: Throwable) {
                     Toast.makeText(requireActivity(), "Gagal instance Retrofit", Toast.LENGTH_SHORT).show()
                 }
             })

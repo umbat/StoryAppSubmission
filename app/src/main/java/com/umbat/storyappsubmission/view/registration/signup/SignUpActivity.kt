@@ -7,19 +7,21 @@ import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import com.umbat.storyappsubmission.api.ApiService
+import com.umbat.storyappsubmission.api.ActivityResponses
+import com.umbat.storyappsubmission.api.ApiConfig
 import com.umbat.storyappsubmission.databinding.ActivitySignUpBinding
 import com.umbat.storyappsubmission.model.UserModel
 import com.umbat.storyappsubmission.model.UserPreference
 import com.umbat.storyappsubmission.view.ViewModelFactory
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -63,6 +65,8 @@ class SignUpActivity : AppCompatActivity() {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
+            val service = ApiConfig().getApiService().registerAccount(name, email, password)
+
             when {
                 name.isEmpty() -> {
                     binding.nameEditTextLayout.error = "Masukkan nama"
@@ -76,38 +80,52 @@ class SignUpActivity : AppCompatActivity() {
 
                 else -> {
                     signupViewModel.saveUser(UserModel(name, email, password, false))
-                    AlertDialog.Builder(this).apply {
-                        setTitle("Yeah!")
-                        setMessage("Akunnya sudah jadi nih. Yuk, login dan belajar coding.")
-                        setPositiveButton("Lanjut") { _, _ ->
-                            finish()
+                    service.enqueue(object : Callback<ActivityResponses.SignUpUploadResponse> {
+                        override fun onResponse(
+                            call: Call<ActivityResponses.SignUpUploadResponse>,
+                            response: Response<ActivityResponses.SignUpUploadResponse>
+                        ) {
+                            if (response.isSuccessful) {
+                                val responseBody = response.body()
+                                if (responseBody != null && !responseBody.error) {
+                                    Toast.makeText(this@SignUpActivity, responseBody.message, Toast.LENGTH_SHORT).show()
+                                }
+                            } else {
+                                Toast.makeText(this@SignUpActivity, response.message(), Toast.LENGTH_SHORT).show()
+                            }
                         }
-                        create()
-                        show()
-                    }
+                        override fun onFailure(call: Call<ActivityResponses.SignUpUploadResponse>, t: Throwable) {
+                            Toast.makeText(this@SignUpActivity, "Gagal instance Retrofit", Toast.LENGTH_SHORT).show()
+                        }
+                    })
                 }
             }
-
-//            val service = ApiService.ApiConfig()
-//                .getApiService().registerAccount(name, email, password)
-//            service.enqueue(object : Callback<ApiService.FileUploadResponse> {
-//                override fun onResponse(
-//                    call: Call<ApiService.FileUploadResponse>,
-//                    response: Response<ApiService.FileUploadResponse>
-//                ) {
-//                    if (response.isSuccessful) {
-//                        val responseBody = response.body()
-//                        if (responseBody != null && !responseBody.error) {
-//                            Toast.makeText(this@SignUpActivity, responseBody.message, Toast.LENGTH_SHORT).show()
-//                        }
-//                    } else {
-//                        Toast.makeText(this@SignUpActivity, response.message(), Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//                override fun onFailure(call: Call<ApiService.FileUploadResponse>, t: Throwable) {
-//                    Toast.makeText(this@SignUpActivity, "Gagal instance Retrofit", Toast.LENGTH_SHORT).show()
-//                }
-//            })
         }
     }
+
+//    private fun makeAccount() {
+//        val name = String.toString()
+//        val email = String.toString()
+//        val password = String.toString()
+//
+//        val service = ApiConfig().getApiService().registerAccount(name, email, password)
+//        service.enqueue(object : Callback<ActivityResponses.SignUpUploadResponse> {
+//            override fun onResponse(
+//                call: Call<ActivityResponses.SignUpUploadResponse>,
+//                response: Response<ActivityResponses.SignUpUploadResponse>
+//            ) {
+//                if (response.isSuccessful) {
+//                    val responseBody = response.body()
+//                    if (responseBody != null && !responseBody.error) {
+//                        Toast.makeText(this@SignUpActivity, responseBody.message, Toast.LENGTH_SHORT).show()
+//                    }
+//                } else {
+//                    Toast.makeText(this@SignUpActivity, response.message(), Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//            override fun onFailure(call: Call<ActivityResponses.SignUpUploadResponse>, t: Throwable) {
+//                Toast.makeText(this@SignUpActivity, "Gagal instance Retrofit", Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
 }
