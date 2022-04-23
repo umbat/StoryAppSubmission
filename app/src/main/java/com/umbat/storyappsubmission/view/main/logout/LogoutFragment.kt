@@ -1,7 +1,6 @@
-package com.umbat.storyappsubmission.view.main.profile
+package com.umbat.storyappsubmission.view.main.logout
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,17 +9,12 @@ import android.view.ViewGroup
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
-import com.umbat.storyappsubmission.R
 import com.umbat.storyappsubmission.databinding.FragmentProfileBinding
-import com.umbat.storyappsubmission.model.UserPreference
-import com.umbat.storyappsubmission.view.ViewModelFactory
-import com.umbat.storyappsubmission.view.registration.welcome.WelcomeActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class ProfileFragment : Fragment() {
-    private lateinit var profileViewModel: ProfileViewModel
+    private lateinit var logoutViewModel: LogoutViewModel
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -55,7 +49,7 @@ class ProfileFragment : Fragment() {
 
     private fun setupAction() {
         binding.logoutButton.setOnClickListener {
-            profileViewModel.logout()
+            logoutViewModel.logout()
         }
     }
 

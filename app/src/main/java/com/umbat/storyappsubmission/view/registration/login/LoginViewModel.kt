@@ -2,31 +2,33 @@ package com.umbat.storyappsubmission.view.registration.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.umbat.storyappsubmission.api.ActivityResponses
+import com.umbat.storyappsubmission.repo.Repository
 import com.umbat.storyappsubmission.model.TokenModel
-import com.umbat.storyappsubmission.model.UserModel
-import com.umbat.storyappsubmission.model.UserPreference
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val pref: UserPreference) : ViewModel() {
-    fun getUser(): LiveData<UserModel> {
-        return pref.getUser().asLiveData()
+class LoginViewModel(private val pref: Repository) : ViewModel() {
+    val loginResult: LiveData<ActivityResponses.LoginResult> = pref.loginResult
+    val loginResponse: LiveData<ActivityResponses.LoginResponse> = pref.loginResponse
+    val showLoading: LiveData<Boolean> = pref.showLoading
+    val toastText: LiveData<String> = pref.toastText
+
+    fun loginAccount(email: String, password: String) {
+        viewModelScope.launch {
+            pref.loginAccount(email, password)
+        }
+    }
+
+    fun saveState(token: TokenModel){
+        viewModelScope.launch {
+            pref.saveState(token)
+        }
     }
 
     fun login() {
         viewModelScope.launch {
             pref.login()
-        }
-    }
-
-    fun getToken(): LiveData<TokenModel> {
-        return pref.getToken().asLiveData()
-    }
-
-    fun saveToken(token: TokenModel){
-        viewModelScope.launch {
-            pref.saveToken(token)
         }
     }
 }

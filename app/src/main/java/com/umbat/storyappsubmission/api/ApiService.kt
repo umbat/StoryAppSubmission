@@ -10,51 +10,32 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
-class ApiConfig {
-    fun getApiService(): ApiService {
-        val loggingInterceptor =
-            if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-            } else {
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
-            }
-        val client = OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .build()
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://story-api.dicoding.dev/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
-            .build()
-        return retrofit.create(ApiService::class.java)
-    }
-}
-
 interface ApiService {
+    @FormUrlEncoded
     @POST("v1/register")
     fun registerAccount(
         @Field("name") name: String,
         @Field("email") email: String,
         @Field("password") password: String
-    ): Call<ActivityResponses.SignUpUploadResponse>
+    ): Call<ActivityResponses.SignUpResponse>
 
+    @FormUrlEncoded
     @POST("v1/login")
     fun loginAccount(
         @Field("email") name: String,
-        @Field("password") email: String,
-        @Field("token") password: String
-    ):Call<ActivityResponses.LoginUploadResponse>
+        @Field("password") email: String
+    ): Call<ActivityResponses.LoginResponse>
 
     @Multipart
     @POST("v1/stories")
-    @Headers("Authorization: Bearer <token>")
     fun uploadImage(
+        @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
     ): Call<ActivityResponses.FileUploadResponse>
 
     @GET("v1/stories")
     fun getStoriesList(
-        @Header("Authorization") Authorization: String
+        @Header("Authorization") token: String
     ): Call<ActivityResponses.GetAllStoriesResponse>
 }

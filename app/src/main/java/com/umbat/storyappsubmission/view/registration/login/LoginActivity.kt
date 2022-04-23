@@ -5,33 +5,22 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
-import com.umbat.storyappsubmission.api.ActivityResponses
-import com.umbat.storyappsubmission.api.ApiConfig
+import androidx.activity.viewModels
+import com.umbat.storyappsubmission.R
 import com.umbat.storyappsubmission.databinding.ActivityLoginBinding
 import com.umbat.storyappsubmission.model.TokenModel
-import com.umbat.storyappsubmission.model.UserModel
-import com.umbat.storyappsubmission.model.UserPreference
 import com.umbat.storyappsubmission.view.ViewModelFactory
 import com.umbat.storyappsubmission.view.main.MainActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var loginViewModel: LoginViewModel
+    private val loginViewModel: LoginViewModel by viewModels { viewModelFactory }
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var user: UserModel
-    private lateinit var token: TokenModel
+    private lateinit var viewModelFactory: ViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,76 +46,90 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        loginViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
-        )[LoginViewModel::class.java]
+        viewModelFactory = ViewModelFactory.getInstance(this)
+    }
 
-        loginViewModel.getUser().observe(this) { user ->
-            this.user = user
+    private fun showLoading() {
+        loginViewModel.showLoading.observe(this@LoginActivity) {
+            binding.progressBarLogin.visibility = if (it) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun showToast() {
+        loginViewModel.toastText.observe(this@LoginActivity) { toastText ->
+            Toast.makeText(
+                this@LoginActivity, toastText, Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun postText() {
+        binding.apply {
+            loginViewModel.loginAccount(
+                emailEditText.text.toString(),
+                passwordEditText.text.toString()
+            )
         }
 
-        loginViewModel.getToken().observe(this) { token ->
-            this.token = token
+        loginViewModel.loginResult.observe(this@LoginActivity) { response ->
+            saveState(
+                TokenModel(
+                    response.name,
+                    AUTH_KEY + (response.token),
+                    true
+                )
+            )
         }
+    }
+
+    private fun saveState(session: TokenModel){
+        loginViewModel.saveState(session)
+    }
+
+    companion object {
+        private const val AUTH_KEY = "Bearer "
     }
 
     private fun setupAction() {
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            val token = binding.passwordEditText.text.toString()
-
-            val service = ApiConfig().getApiService().loginAccount(email, password, token)
 
             when {
                 email.isEmpty() -> {
-                    binding.emailEditTextLayout.error = "Masukkan email"
+                    binding.emailEditTextLayout.error = getString(R.string.input_email)
                 }
                 password.isEmpty() -> {
-                    binding.passwordEditTextLayout.error = "Masukkan password"
+                    binding.passwordEditTextLayout.error = getString(R.string.input_password)
                 }
-                email != user.email -> {
-                    binding.emailEditTextLayout.error = "Email tidak sesuai"
+                email != email -> {
+                    binding.emailEditTextLayout.error = getString(R.string.email_dont_match)
                 }
-                password != user.password -> {
-                    binding.passwordEditTextLayout.error = "Password tidak sesuai"
+                password != password -> {
+                    binding.passwordEditTextLayout.error = getString(R.string.password_dont_match)
                 }
                 else -> {
                     loginViewModel.login()
-                    loginViewModel.saveToken(TokenModel(name = String.toString(), userId = String.toString(), token = String.toString()))
-                    service.enqueue(object : Callback<ActivityResponses.LoginUploadResponse> {
-                        override fun onResponse(
-                            call: Call<ActivityResponses.LoginUploadResponse>,
-                            response: Response<ActivityResponses.LoginUploadResponse>
-                        ) {
-                            AlertDialog.Builder(this@LoginActivity).apply {
-                                setTitle("Yeah!")
-                                setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
-                                setPositiveButton("Lanjut") { _, _ ->
-                                    val intent = Intent(context, MainActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                                    startActivity(intent)
-                                    finish()
-                                }
-                                create()
-                                show()
-                            }
-                            if (response.isSuccessful) {
-                                val responseBody = response.body()
-                                if (responseBody != null && !responseBody.error) {
-                                    Toast.makeText(this@LoginActivity, responseBody.message, Toast.LENGTH_SHORT).show()
-                                }
-                            } else {
-                                Toast.makeText(this@LoginActivity, response.message(), Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                        override fun onFailure(call: Call<ActivityResponses.LoginUploadResponse>, t: Throwable) {
-                            Toast.makeText(this@LoginActivity, "Gagal instance Retrofit", Toast.LENGTH_SHORT).show()
-                        }
-                    })
+                    showLoading()
+                    postText()
+                    showToast()
+                    intentActivity()
                 }
             }
         }
+    }
+
+    private fun intentActivity() {
+        loginViewModel.loginResponse.observe(this@LoginActivity) { response ->
+            if (!response.error) {
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                finish()
+            }
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
     }
 }

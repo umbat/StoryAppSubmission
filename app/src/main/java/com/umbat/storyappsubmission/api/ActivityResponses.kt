@@ -1,7 +1,7 @@
 package com.umbat.storyappsubmission.api
 
 import com.google.gson.annotations.SerializedName
-import com.umbat.storyappsubmission.model.UserModel
+import com.umbat.storyappsubmission.model.StoryModel
 
 class ActivityResponses {
     data class FileUploadResponse(
@@ -12,7 +12,7 @@ class ActivityResponses {
         val message: String
     )
 
-    data class SignUpUploadResponse(
+    data class SignUpResponse(
         @field:SerializedName("error")
         val error: Boolean,
 
@@ -20,7 +20,7 @@ class ActivityResponses {
         val message: String
     )
 
-    data class LoginUploadResponse(
+    data class LoginResponse(
         @field:SerializedName("error")
         val error: Boolean,
 
@@ -28,7 +28,15 @@ class ActivityResponses {
         val message: String,
 
         @field:SerializedName("loginResult")
-        val loginResult: String
+        val loginResult: LoginResult? = null
+    )
+
+    data class LoginResult(
+        @field:SerializedName("name")
+        val name: String,
+
+        @field:SerializedName("token")
+        val token: String
     )
 
     data class GetAllStoriesResponse(
@@ -39,6 +47,6 @@ class ActivityResponses {
         val message: String,
 
         @field:SerializedName("listStory")
-        val listStory: ArrayList<UserModel>
+        val listStory: ArrayList<StoryModel>
     )
 }

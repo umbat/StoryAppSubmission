@@ -1,67 +1,91 @@
 package com.umbat.storyappsubmission.view.main.home
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.umbat.storyappsubmission.databinding.FragmentAddStoryBinding
 import com.umbat.storyappsubmission.databinding.FragmentHomeBinding
-import com.umbat.storyappsubmission.model.UserPreference
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+import com.umbat.storyappsubmission.view.ViewModelFactory
+import com.umbat.storyappsubmission.view.registration.welcome.WelcomeActivity
 
 class HomeFragment : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var homeViewModel: HomeViewModel
-    private lateinit var adapter: StoryAdapter
-    private lateinit var token: String
+    private val homeViewModel: HomeViewModel by viewModels { viewModelFactory }
+    private lateinit var viewModelFactory: ViewModelFactory
+    private var token = ""
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentHomeBinding.bind(view)
-
-        adapter = StoryAdapter()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
         binding.apply {
-            rvStory.layoutManager = LinearLayoutManager(activity)
+            rvStory.layoutManager = LinearLayoutManager(requireContext())
             rvStory.setHasFixedSize(true)
-            rvStory.adapter = adapter
         }
 
-        showLoading(true)
         setupViewModel()
+        setupAdapter()
+
+        return root
     }
 
-    private fun setupViewModel() {
-        homeViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider(UserPreference.getInstance(dataStore))
-        )[HomeViewModel::class.java]
-
-        homeViewModel.setStoriesList(token)
-        homeViewModel.getStoriesList().observe(viewLifecycleOwner) {
-            if (it != null) {
-                adapter.setList(it)
-                showLoading(false)
+    private fun setupAdapter() {
+        homeViewModel.getAllStoriesResponse.observe(viewLifecycleOwner) { adapter ->
+            if (adapter != null) {
+                binding.rvStory.adapter = StoryAdapter(adapter.listStory)
             }
         }
     }
 
-    private fun showLoading(state: Boolean){
-        if (state) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
+    private fun setupViewModel() {
+        viewModelFactory = ViewModelFactory.getInstance(requireContext())
+
+        showLoading()
+        homeViewModel.loadState().observe(viewLifecycleOwner) {
+            token = it.token
+            if (!it.isLogin) {
+                intentActivity()
+            } else {
+                getStoriesList(token)
+            }
+        }
+        showToast()
+    }
+
+    private fun showLoading() {
+        homeViewModel.showLoading.observe(viewLifecycleOwner) {
+            binding.progressBarHome.visibility = if (it) View.VISIBLE else View.GONE
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding
+    private fun showToast() {
+        homeViewModel.toastText.observe(viewLifecycleOwner) { toastText ->
+            Toast.makeText(
+                requireContext(), toastText, Toast.LENGTH_SHORT
+            ).show()
+        }
     }
+
+    private fun intentActivity() {
+        startActivity(Intent(requireContext(), WelcomeActivity::class.java))
+    }
+
+    private fun getStoriesList(token: String) {
+        homeViewModel.getStoriesList(token)
+    }
+
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        binding
+//    }
 }

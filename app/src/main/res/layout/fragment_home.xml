@@ -20,14 +20,16 @@
         tools:listitem="@layout/item_list_story" />
 
     <ProgressBar
-        android:id="@+id/progress_bar"
+        android:id="@+id/progressBarHome"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_story"
+        android:indeterminateTint="@color/blue_dicoding"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

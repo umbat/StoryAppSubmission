@@ -27,4 +27,11 @@
     <string name="greeting">Halo %1$s,</string>
     <string name="logout">Keluar</string>
     <string name="message_main_page">Selamat Belajar di Dicoding.</string>
+    <string name="title">Title</string>
+
+    <string name="input_name">Masukkan nama</string>
+    <string name="input_email">Masukkan email</string>
+    <string name="input_password">Masukkan password</string>
+    <string name="email_dont_match">Email tidak sesuai</string>
+    <string name="password_dont_match">Password tidak sesuai</string>
 </resources>

@@ -17,7 +17,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.umbat.storyappsubmission.api.ActivityResponses
 import com.umbat.storyappsubmission.api.ApiConfig
-import com.umbat.storyappsubmission.api.ApiService
 import com.umbat.storyappsubmission.databinding.FragmentAddStoryBinding
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -57,7 +56,7 @@ class AddStoryFragment : Fragment() {
         }
         binding.btnCamera.setOnClickListener { startCameraX() }
         binding.btnGallery.setOnClickListener { startGallery() }
-        binding.upload.setOnClickListener { uploadImage() }
+//        binding.upload.setOnClickListener { uploadImage() }
 
         return root
     }
@@ -127,41 +126,41 @@ class AddStoryFragment : Fragment() {
         }
     }
 
-    private fun uploadImage() {
-        if (getFile != null) {
-            val file = reduceFileImage(getFile as File)
-
-            val description = "Ini adalah deksripsi gambar".toRequestBody("text/plain".toMediaType())
-            val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                "photo",
-                file.name,
-                requestImageFile
-            )
-
-            val service = ApiConfig().getApiService().uploadImage(imageMultipart, description)
-            service.enqueue(object : Callback<ActivityResponses.FileUploadResponse> {
-                override fun onResponse(
-                    call: Call<ActivityResponses.FileUploadResponse>,
-                    response: Response<ActivityResponses.FileUploadResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
-                        if (responseBody != null && !responseBody.error) {
-                            Toast.makeText(requireActivity(), responseBody.message, Toast.LENGTH_SHORT).show()
-                        }
-                    } else {
-                        Toast.makeText(requireActivity(), response.message(), Toast.LENGTH_SHORT).show()
-                    }
-                }
-                override fun onFailure(call: Call<ActivityResponses.FileUploadResponse>, t: Throwable) {
-                    Toast.makeText(requireActivity(), "Gagal instance Retrofit", Toast.LENGTH_SHORT).show()
-                }
-            })
-        } else {
-            Toast.makeText(requireActivity(), "Silakan masukkan berkas gambar terlebih dahulu.", Toast.LENGTH_SHORT).show()
-        }
-    }
+//    private fun uploadImage() {
+//        if (getFile != null) {
+//            val file = reduceFileImage(getFile as File)
+//
+//            val description = "Ini adalah deksripsi gambar".toRequestBody("text/plain".toMediaType())
+//            val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+//            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+//                "photo",
+//                file.name,
+//                requestImageFile
+//            )
+//
+//            val service = ApiConfig.getApiService().uploadImage(imageMultipart, description)
+//            service.enqueue(object : Callback<ActivityResponses.FileUploadResponse> {
+//                override fun onResponse(
+//                    call: Call<ActivityResponses.FileUploadResponse>,
+//                    response: Response<ActivityResponses.FileUploadResponse>
+//                ) {
+//                    if (response.isSuccessful) {
+//                        val responseBody = response.body()
+//                        if (responseBody != null && !responseBody.error) {
+//                            Toast.makeText(requireActivity(), responseBody.message, Toast.LENGTH_SHORT).show()
+//                        }
+//                    } else {
+//                        Toast.makeText(requireActivity(), response.message(), Toast.LENGTH_SHORT).show()
+//                    }
+//                }
+//                override fun onFailure(call: Call<ActivityResponses.FileUploadResponse>, t: Throwable) {
+//                    Toast.makeText(requireActivity(), "Gagal instance Retrofit", Toast.LENGTH_SHORT).show()
+//                }
+//            })
+//        } else {
+//            Toast.makeText(requireActivity(), "Silakan masukkan berkas gambar terlebih dahulu.", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 
     private fun reduceFileImage(file: File): File {
         return file
