@@ -34,4 +34,5 @@
     <string name="input_password">Masukkan password</string>
     <string name="email_dont_match">Email tidak sesuai</string>
     <string name="password_dont_match">Password tidak sesuai</string>
+    <string name="title_logout">Logout</string>
 </resources>

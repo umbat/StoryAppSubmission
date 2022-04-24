@@ -129,7 +129,8 @@ class Repository private constructor(
 
     fun getStoriesList(token: String) {
         _showLoading.value = true
-        val client = apiService.getStoriesList("Bearer $token")
+        val client = apiService.getStoriesList(token)
+        Log.d("TOKEN", token)
 
         client.enqueue(object : Callback<ActivityResponses.GetAllStoriesResponse> {
             override fun onResponse(
