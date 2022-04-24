@@ -4,11 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.umbat.storyappsubmission.databinding.FragmentAddStoryBinding
 import com.umbat.storyappsubmission.databinding.FragmentHomeBinding
 import com.umbat.storyappsubmission.view.ViewModelFactory
 import com.umbat.storyappsubmission.view.registration.welcome.WelcomeActivity
@@ -81,11 +79,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun getStoriesList(token: String) {
-        homeViewModel.getStoriesList(token)
+        homeViewModel.getStoriesList("Bearer $token")
     }
-
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        binding
-//    }
 }
