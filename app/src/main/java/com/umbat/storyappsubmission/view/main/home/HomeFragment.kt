@@ -79,6 +79,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun getStoriesList(token: String) {
-        homeViewModel.getStoriesList("Bearer $token")
+        homeViewModel.getStoriesList(token)
     }
 }

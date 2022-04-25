@@ -24,8 +24,8 @@ class Repository private constructor(
     private val _loginResponse = MutableLiveData<ActivityResponses.LoginResponse>()
     val loginResponse: LiveData<ActivityResponses.LoginResponse> = _loginResponse
 
-    private val _loginResult = MutableLiveData<ActivityResponses.LoginResult>()
-    val loginResult: LiveData<ActivityResponses.LoginResult> = _loginResult
+    private val _loginResult = MutableLiveData<ActivityResponses.LoginResult?>()
+    val loginResult: MutableLiveData<ActivityResponses.LoginResult?> = _loginResult
 
     private val _fileUploadResponse = MutableLiveData<ActivityResponses.FileUploadResponse>()
     val fileUploadResponse: LiveData<ActivityResponses.FileUploadResponse> = _fileUploadResponse
@@ -81,6 +81,7 @@ class Repository private constructor(
                 if (response.isSuccessful && response.body() != null) {
                     _loginResponse.value = response.body()
                     _toastText.value = response.body()?.message
+                    _loginResult.value = response.body()?.loginResult
                 } else {
                     _toastText.value = response.message().toString()
                     Log.e(
@@ -97,7 +98,7 @@ class Repository private constructor(
         })
     }
 
-    fun uploadImage(token: String, file: MultipartBody.Part, description: RequestBody) {
+    fun uploadStory(token: String, file: MultipartBody.Part, description: RequestBody) {
         _showLoading.value = true
         val client = apiService.uploadImage(token, file, description)
 

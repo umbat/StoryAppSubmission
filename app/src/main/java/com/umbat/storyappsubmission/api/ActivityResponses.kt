@@ -47,6 +47,6 @@ class ActivityResponses {
         val message: String,
 
         @field:SerializedName("listStory")
-        val listStory: ArrayList<StoryModel>
+        val listStory: List<StoryModel>
     )
 }

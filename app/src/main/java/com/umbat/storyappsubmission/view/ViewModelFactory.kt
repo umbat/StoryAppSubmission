@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.umbat.storyappsubmission.repo.Injection
 import com.umbat.storyappsubmission.repo.Repository
+import com.umbat.storyappsubmission.view.main.addstory.AddStoryViewModel
 import com.umbat.storyappsubmission.view.main.home.HomeViewModel
 import com.umbat.storyappsubmission.view.main.logout.LogoutViewModel
 import com.umbat.storyappsubmission.view.registration.login.LoginViewModel
@@ -23,6 +24,9 @@ class ViewModelFactory(private val pref: Repository) : ViewModelProvider.NewInst
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(pref) as T
+            }
+            modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
+                AddStoryViewModel(pref) as T
             }
             modelClass.isAssignableFrom(LogoutViewModel::class.java) -> {
                 LogoutViewModel(pref) as T

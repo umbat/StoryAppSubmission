@@ -72,13 +72,15 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginViewModel.loginResult.observe(this@LoginActivity) { response ->
-            saveState(
-                TokenModel(
-                    response.name,
-                    AUTH_KEY + (response.token),
-                    true
+            if (response != null) {
+                saveState(
+                    TokenModel(
+                        response.name,
+                        AUTH_KEY + (response.token),
+                        true
+                    )
                 )
-            )
+            }
         }
     }
 

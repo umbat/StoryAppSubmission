@@ -22,7 +22,7 @@
     <string name="title_profile">Profile</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
-    <string name="hint">Masukkan deskripsi</string>
+    <string name="story_desc_hint">Masukkan deskripsi</string>
     <string name="upload">Upload</string>
     <string name="greeting">Halo %1$s,</string>
     <string name="logout">Keluar</string>
@@ -35,4 +35,6 @@
     <string name="email_dont_match">Email tidak sesuai</string>
     <string name="password_dont_match">Password tidak sesuai</string>
     <string name="title_logout">Logout</string>
+    <string name="input_image">Pilih foto yang akan diupload!</string>
+    <string name="add_story">Add Story</string>
 </resources>

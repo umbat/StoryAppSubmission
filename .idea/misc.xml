@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/drawable-v24/ic_broken_image_black.xml" value="0.131" />
+        <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/drawable-v24/ic_error.xml" value="0.131" />
+        <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/drawable-v24/ic_loading.xml" value="0.131" />
         <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/drawable/bg_button.xml" value="0.134" />
         <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/drawable/bg_button_disable.xml" value="0.134" />
+        <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/drawable/ic_baseline_language_24.xml" value="0.131" />
         <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/drawable/ic_capture.xml" value="0.134" />
         <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/layout/activity_camera.xml" value="0.13496376811594202" />
         <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/layout/activity_detail.xml" value="0.25" />
@@ -14,7 +18,7 @@
         <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
         <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/layout/activity_welcome.xml" value="0.22" />
         <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/layout/fragment_add_story.xml" value="0.22" />
-        <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/layout/fragment_home.xml" value="0.19825708061002179" />
         <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/layout/fragment_logout.xml" value="0.12447916666666667" />
         <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/layout/fragment_profile.xml" value="0.22" />
         <entry key="..\:/Users/Farhan Pratama/IntermediateAndroid/StoryAppSubmission/app/src/main/res/layout/item_list_story.xml" value="0.25" />

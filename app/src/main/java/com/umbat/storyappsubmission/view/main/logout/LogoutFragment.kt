@@ -30,4 +30,8 @@ class LogoutFragment : Fragment() {
             logoutViewModel.logout()
         }
     }
+
+    private fun intentFragment() {
+
+    }
 }

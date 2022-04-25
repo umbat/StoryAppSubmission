@@ -11,6 +11,7 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginTop="48dp"
+        android:contentDescription="@string/add_story"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -42,33 +43,49 @@
         app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
         app:layout_constraintTop_toBottomOf="@+id/previewImageView" />
 
-    <EditText
-        android:id="@+id/edtInput"
-        android:layout_width="0dip"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tl_desc_story"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:hint="@string/hint"
-        android:inputType="textCapSentences|textMultiLine"
-        android:maxLength="2000"
-        android:lines="7"
-        android:maxLines="7"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/blue_dicoding"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="16dp"
+        android:hint="@string/story_desc_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCamera" />
+        app:layout_constraintTop_toBottomOf="@+id/btnCamera">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_desc_story"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.umbat.storyappsubmission.view.main.addstory.MyButton
-        android:id="@+id/upload"
+        android:id="@+id/btnUpload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/upload"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/edtInput"
-        app:layout_constraintStart_toStartOf="@+id/edtInput"
-        app:layout_constraintTop_toBottomOf="@+id/edtInput" />
+        app:layout_constraintEnd_toEndOf="@+id/tl_desc_story"
+        app:layout_constraintStart_toStartOf="@+id/tl_desc_story"
+        app:layout_constraintTop_toBottomOf="@+id/tl_desc_story" />
+
+    <ProgressBar
+        android:id="@+id/progressBarAddStory"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/blue_dicoding"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVertical"

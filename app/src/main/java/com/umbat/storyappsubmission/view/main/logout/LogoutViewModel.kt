@@ -11,5 +11,4 @@ class LogoutViewModel(private val pref: Repository) : ViewModel() {
             pref.logout()
         }
     }
-
 }

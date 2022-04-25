@@ -1,6 +1,7 @@
 package com.umbat.storyappsubmission.view.registration.login
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.umbat.storyappsubmission.api.ActivityResponses
@@ -9,7 +10,7 @@ import com.umbat.storyappsubmission.model.TokenModel
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val pref: Repository) : ViewModel() {
-    val loginResult: LiveData<ActivityResponses.LoginResult> = pref.loginResult
+    val loginResult: MutableLiveData<ActivityResponses.LoginResult?> = pref.loginResult
     val loginResponse: LiveData<ActivityResponses.LoginResponse> = pref.loginResponse
     val showLoading: LiveData<Boolean> = pref.showLoading
     val toastText: LiveData<String> = pref.toastText

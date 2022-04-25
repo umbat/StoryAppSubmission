@@ -9,14 +9,8 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
 import com.umbat.storyappsubmission.R
 import com.umbat.storyappsubmission.databinding.ActivitySignUpBinding
-import com.umbat.storyappsubmission.model.UserPreference
-import com.umbat.storyappsubmission.repo.Repository
 import com.umbat.storyappsubmission.view.ViewModelFactory
 import com.umbat.storyappsubmission.view.registration.login.LoginActivity
 
