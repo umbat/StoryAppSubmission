@@ -3,7 +3,6 @@ package com.umbat.storyappsubmission.view.registration.welcome
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.umbat.storyappsubmission.R
 import com.umbat.storyappsubmission.databinding.ActivityWelcomeBinding
 import com.umbat.storyappsubmission.view.registration.login.LoginActivity
 import com.umbat.storyappsubmission.view.registration.signup.SignUpActivity

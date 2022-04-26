@@ -1,7 +1,6 @@
 package com.umbat.storyappsubmission.view.main.home
 
 import androidx.lifecycle.*
-import com.umbat.storyappsubmission.api.ActivityResponses
 import com.umbat.storyappsubmission.model.*
 import com.umbat.storyappsubmission.repo.Repository
 import kotlinx.coroutines.launch

@@ -1,40 +1,40 @@
 <resources>
-    <string name="app_name">StoryAppSubmission</string>
+    <string name="app_name">Story App Submission</string>
     <string name="details">Details</string>
     <string name="username">Username</string>
     <string name="story_app">STORY APP</string>
-    <string name="title_welcome_page">Selamat datang di Aplikasi Story Dicoding!</string>
-    <string name="message_welcome_page">Ayo bagikan cerita belajarmu dan berinteraksi dengan user lain dari dicoding!</string>
+    <string name="title_welcome_page">Welcome to Story Coding App!</string>
+    <string name="message_welcome_page">Come share your learning stories and interact with other users from coding!</string>
     <string name="login">LOGIN</string>
     <string name="signup">SIGNUP</string>
     <string name="title_login_page">Login</string>
-    <string name="message_login_page">Masukkan data drimu</string>
+    <string name="message_login_page">Enter your data</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="title_signup_page">Sign Up</string>
-    <string name="name">Nama</string>
+    <string name="name">Name</string>
     <string name="photo_detail_story">Detail Photo Story</string>
     <string name="detail_story">Detail Story</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="title_home">Home</string>
     <string name="title_addStory">Add Story</string>
     <string name="title_profile">Profile</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
-    <string name="story_desc_hint">Masukkan deskripsi</string>
+    <string name="story_desc_hint">Enter a description</string>
     <string name="upload">Upload</string>
-    <string name="greeting">Halo %1$s,</string>
-    <string name="logout">Keluar</string>
-    <string name="message_main_page">Selamat Belajar di Dicoding.</string>
+    <string name="logout">Logout</string>
+    <string name="message_main_page">Have fun learning in coding.</string>
     <string name="title">Title</string>
 
-    <string name="input_name">Masukkan nama</string>
-    <string name="input_email">Masukkan email</string>
-    <string name="input_password">Masukkan password</string>
-    <string name="email_dont_match">Email tidak sesuai</string>
-    <string name="password_dont_match">Password tidak sesuai</string>
+    <string name="input_name">Enter name</string>
+    <string name="input_email">Enter email</string>
+    <string name="input_password">Enter password</string>
+    <string name="email_dont_match">Invalid email</string>
+    <string name="password_dont_match">Password does not match</string>
     <string name="title_logout">Logout</string>
-    <string name="input_image">Pilih foto yang akan diupload!</string>
+    <string name="input_image">Select a photo to upload!</string>
     <string name="add_story">Add Story</string>
+    <string name="password_length">This field can\'t be less than 6 characters</string>
+    <string name="language">Language</string>
 </resources>

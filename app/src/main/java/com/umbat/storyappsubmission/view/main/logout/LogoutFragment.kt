@@ -1,16 +1,21 @@
 package com.umbat.storyappsubmission.view.main.logout
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.umbat.storyappsubmission.databinding.FragmentLogoutBinding
+import com.umbat.storyappsubmission.view.ViewModelFactory
+import com.umbat.storyappsubmission.view.registration.welcome.WelcomeActivity
 
 class LogoutFragment : Fragment() {
-    private lateinit var logoutViewModel: LogoutViewModel
     private var _binding: FragmentLogoutBinding? = null
     private val binding get() = _binding!!
+    private val logoutViewModel: LogoutViewModel by viewModels { viewModelFactory }
+    private lateinit var viewModelFactory: ViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -19,6 +24,7 @@ class LogoutFragment : Fragment() {
     ): View {
         _binding = FragmentLogoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        viewModelFactory = ViewModelFactory.getInstance(requireContext())
 
         setupAction()
 
@@ -28,10 +34,14 @@ class LogoutFragment : Fragment() {
     private fun setupAction() {
         binding.logoutButton.setOnClickListener {
             logoutViewModel.logout()
+            intentFragment()
         }
     }
 
     private fun intentFragment() {
-
+        activity?.let{
+            val intent = Intent (it, WelcomeActivity::class.java)
+            it.startActivity(intent)
+        }
     }
 }

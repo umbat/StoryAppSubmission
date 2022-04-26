@@ -24,7 +24,7 @@ class DetailActivity : AppCompatActivity() {
             tvUsername.text = detail.name
             tvDetailStory.text = detail.description
             Glide.with(this@DetailActivity)
-                .load(detail.photo)
+                .load(detail.photoUrl)
                 .fitCenter()
                 .apply(
                     RequestOptions

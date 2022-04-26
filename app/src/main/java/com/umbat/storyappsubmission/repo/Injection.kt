@@ -5,7 +5,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.umbat.storyappsubmission.api.ApiConfig
-import com.umbat.storyappsubmission.api.ApiService
 import com.umbat.storyappsubmission.model.UserPreference
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("token")

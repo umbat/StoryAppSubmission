@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Story App Submission</string>
+    <string name="details">Detail</string>
+    <string name="username">Username</string>
+    <string name="story_app">STORY APP</string>
+    <string name="title_welcome_page">Selamat datang di Aplikasi Story Dicoding!</string>
+    <string name="message_welcome_page">Ayo bagikan cerita belajarmu dan berinteraksi dengan user lain dari dicoding!</string>
+    <string name="login">LOGIN</string>
+    <string name="signup">SIGNUP</string>
+    <string name="title_login_page">Login</string>
+    <string name="message_login_page">Masukkan data dirimu</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="title_signup_page">Sign Up</string>
+    <string name="name">Nama</string>
+    <string name="photo_detail_story">Detail Foto Story</string>
+    <string name="detail_story">Detail Story</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_addStory">Tambah Story</string>
+    <string name="title_profile">Profil</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="story_desc_hint">Masukkan deskripsi</string>
+    <string name="upload">Unggah</string>
+    <string name="logout">Keluar</string>
+    <string name="message_main_page">Selamat Belajar di Dicoding.</string>
+    <string name="title">Judul</string>
+
+    <string name="input_name">Masukkan nama</string>
+    <string name="input_email">Masukkan email</string>
+    <string name="input_password">Masukkan password</string>
+    <string name="email_dont_match">Email tidak sesuai</string>
+    <string name="password_dont_match">Password tidak sesuai</string>
+    <string name="title_logout">Logout</string>
+    <string name="input_image">Pilih foto yang akan diupload!</string>
+    <string name="add_story">Tambah Story</string>
+    <string name="password_length">Kolom ini harus berisi lebih dari 6 karakter</string>
+    <string name="language">Bahasa</string>
+</resources>

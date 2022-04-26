@@ -1,8 +1,10 @@
 package com.umbat.storyappsubmission.view.main.home
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -20,20 +22,22 @@ class StoryAdapter(private val listStory: List<StoryModel>) :
         fun bind(story: StoryModel){
             binding.apply {
                 tvUsername.text = story.name
+                tvDesc.text = story.description
                 Glide.with(itemView.context)
-                    .load(story.photo)
+                    .load(story.photoUrl)
                     .fitCenter()
                     .apply(
                         RequestOptions
                             .placeholderOf(R.drawable.ic_baseline_refresh_24)
                             .error(R.drawable.ic_baseline_broken_image_24)
-                    ).into(ivStory)
+                    )
+                    .into(ivStory)
             }
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, DetailActivity::class.java)
                 intent.putExtra(EXTRA_DATA, story)
-                itemView.context.startActivity(intent)
+                itemView.context.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(itemView.context as Activity).toBundle())
             }
         }
     }

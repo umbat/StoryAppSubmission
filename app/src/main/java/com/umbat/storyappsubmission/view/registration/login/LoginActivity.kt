@@ -1,6 +1,5 @@
 package com.umbat.storyappsubmission.view.registration.login
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
