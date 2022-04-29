@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@+id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -14,7 +14,12 @@
         android:id="@+id/navigation_addStory"
         android:name="com.umbat.storyappsubmission.view.main.addstory.AddStoryFragment"
         android:label="@string/title_addStory"
-        tools:layout="@layout/fragment_add_story" />
+        tools:layout="@layout/fragment_add_story">
+        <action
+            app:launchSingleTop="true"
+            android:id="@+id/action_navigation_addStory_to_navigation_home"
+            app:destination="@id/navigation_home"/>
+    </fragment>
     <fragment
         android:id="@+id/navigation_logout"
         android:name="com.umbat.storyappsubmission.view.main.logout.LogoutFragment"

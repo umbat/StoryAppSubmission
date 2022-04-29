@@ -16,9 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.umbat.storyappsubmission.R
 import com.umbat.storyappsubmission.view.ViewModelFactory
-import com.umbat.storyappsubmission.view.main.home.HomeFragment
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -163,16 +163,14 @@ class AddStoryFragment : Fragment() {
         addStoryViewModel.uploadStory(token, file, description)
         addStoryViewModel.fileUploadResponse.observe(viewLifecycleOwner) {
             if (!it.error) {
-                intentActivity()
+                intentFragment()
             }
         }
         showToast()
     }
 
-    private fun intentActivity() {
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.main_activity, HomeFragment())
-        transaction.commit()
+    private fun intentFragment() {
+        findNavController().navigate(R.id.action_navigation_addStory_to_navigation_home)
     }
 
     private fun showToast() {
