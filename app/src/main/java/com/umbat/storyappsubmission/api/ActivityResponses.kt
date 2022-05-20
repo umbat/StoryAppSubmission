@@ -1,7 +1,7 @@
 package com.umbat.storyappsubmission.api
 
 import com.google.gson.annotations.SerializedName
-import com.umbat.storyappsubmission.model.StoryModel
+import com.umbat.storyappsubmission.model.StoryResponseItem
 
 class ActivityResponses {
     data class FileUploadResponse(
@@ -47,6 +47,6 @@ class ActivityResponses {
         val message: String,
 
         @field:SerializedName("listStory")
-        val listStory: List<StoryModel>
+        val listStory: List<StoryResponseItem>
     )
 }

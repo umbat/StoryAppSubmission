@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.main.detail.DetailActivity">
+    tools:context=".ui.main.detail.DetailActivity">
 
     <ImageView
         android:id="@+id/ivDetailStory"
@@ -39,7 +39,5 @@
         app:layout_constraintEnd_toEndOf="@+id/tvUsername"
         app:layout_constraintStart_toStartOf="@+id/tvUsername"
         app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

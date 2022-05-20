@@ -38,4 +38,11 @@
     <string name="add_story">Tambah Story</string>
     <string name="password_length">Kolom ini harus berisi lebih dari 6 karakter</string>
     <string name="language">Bahasa</string>
+
+    <string name="location">Lokasi</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satelit</string>
+    <string name="terrain_type">Terrain</string>
+    <string name="hybrid_type">Hybrid</string>
 </resources>

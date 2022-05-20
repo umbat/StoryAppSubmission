@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.main.addstory.AddStoryFragment">
+    tools:context=".ui.main.addstory.AddStoryFragment">
 
     <ImageView
         android:id="@+id/previewImageView"
@@ -43,6 +43,16 @@
         app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
         app:layout_constraintTop_toBottomOf="@+id/previewImageView" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue_dicoding"
+        android:text="@string/share_location"
+        app:layout_constraintEnd_toEndOf="@+id/btnGallery"
+        app:layout_constraintStart_toStartOf="@+id/btnCamera"
+        app:layout_constraintTop_toBottomOf="@+id/btnGallery" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tl_desc_story"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -53,7 +63,7 @@
         android:hint="@string/story_desc_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCamera">
+        app:layout_constraintTop_toBottomOf="@+id/btnLocation">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_desc_story"
@@ -64,7 +74,7 @@
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.umbat.storyappsubmission.view.main.addstory.MyButton
+    <com.umbat.storyappsubmission.ui.main.addstory.MyButton
         android:id="@+id/btnUpload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

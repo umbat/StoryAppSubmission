@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.umbat.storyappsubmission.view.main.home.HomeFragment"
+        android:name="com.umbat.storyappsubmission.ui.main.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/navigation_addStory"
-        android:name="com.umbat.storyappsubmission.view.main.addstory.AddStoryFragment"
+        android:name="com.umbat.storyappsubmission.ui.main.addstory.AddStoryFragment"
         android:label="@string/title_addStory"
         tools:layout="@layout/fragment_add_story">
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_logout"
-        android:name="com.umbat.storyappsubmission.view.main.logout.LogoutFragment"
+        android:name="com.umbat.storyappsubmission.ui.main.logout.LogoutFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_logout" />
 </navigation>
