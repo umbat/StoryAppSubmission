@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.main.addstory.AddStoryFragment">
+    tools:context=".ui.main.addstory.AddStoryFragment">
 
     <ImageView
         android:id="@+id/previewImageView"
@@ -64,7 +64,7 @@
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.umbat.storyappsubmission.view.main.addstory.MyButton
+    <com.umbat.storyappsubmission.ui.main.addstory.MyButton
         android:id="@+id/btnUpload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

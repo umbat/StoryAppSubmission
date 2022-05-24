@@ -37,4 +37,11 @@
     <string name="add_story">Add Story</string>
     <string name="password_length">This field can\'t be less than 6 characters</string>
     <string name="language">Language</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="location" />
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satellite</string>
+    <string name="terrain_type">Terrain</string>
+    <string name="hybrid_type">Hybrid</string>
+    <string name="empty_address">Unknown Address</string>
 </resources>

@@ -157,6 +157,35 @@ class Repository private constructor(
         })
     }
 
+    fun getStoriesWithLocation(token: String) {
+        _showLoading.value = true
+        val client = apiService.getStoriesWithLocation(token)
+        Log.d("TOKEN", token)
+
+        client.enqueue(object : Callback<ActivityResponses.GetAllStoriesResponse> {
+            override fun onResponse(
+                call: Call<ActivityResponses.GetAllStoriesResponse>,
+                response: Response<ActivityResponses.GetAllStoriesResponse>
+            ) {
+                _showLoading.value = false
+                if (response.isSuccessful && response.body() != null) {
+                    _getAllStoriesResponse.value = response.body()
+                } else {
+                    _toastText.value = response.message().toString()
+                    Log.e(
+                        TAG,
+                        "onFailure: ${response.message()}, ${response.body()?.message.toString()}"
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<ActivityResponses.GetAllStoriesResponse>, t: Throwable) {
+                _toastText.value = t.message.toString()
+                Log.e(TAG, "onFailure: ${t.message.toString()}")
+            }
+        })
+    }
+
     fun loadState(): LiveData<TokenModel> {
         return pref.loadState().asLiveData()
     }

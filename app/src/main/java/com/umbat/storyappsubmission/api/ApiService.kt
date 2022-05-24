@@ -33,4 +33,10 @@ interface ApiService {
     fun getStoriesList(
         @Header("Authorization") token: String
     ): Call<ActivityResponses.GetAllStoriesResponse>
+
+    @GET("v1/stories")
+    fun getStoriesWithLocation(
+        @Header("Authorization") token: String,
+        @Query("location") includeLocation: Int = 1
+    ): Call<ActivityResponses.GetAllStoriesResponse>
 }

@@ -3,11 +3,16 @@
     package="com.umbat.storyappsubmission">
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
     <application
@@ -17,16 +22,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StoryAppSubmission">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB4H8M3d54T_asCsnZuNj5PsdDOQ59sDWY" />
+
         <activity
-            android:name=".view.main.addstory.CameraActivity"
+            android:name=".ui.main.maps.MapsActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".ui.main.addstory.CameraActivity"
             android:exported="false" />
         <activity
-            android:name=".view.main.detail.DetailActivity"
+            android:name=".ui.main.detail.DetailActivity"
             android:exported="false" />
         <activity
-        android:name=".view.main.MainActivity"
-        android:exported="true"
-        android:launchMode="singleTask">
+            android:name=".ui.main.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,13 +47,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.registration.signup.SignUpActivity"
+            android:name=".ui.registration.signup.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".view.registration.login.LoginActivity"
+            android:name=".ui.registration.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".view.registration.welcome.WelcomeActivity"
+            android:name=".ui.registration.welcome.WelcomeActivity"
             android:exported="false" />
 
     </application>

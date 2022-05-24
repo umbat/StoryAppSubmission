@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.registration.signup.SignUpActivity">
+    tools:context=".ui.registration.signup.SignUpActivity">
 
     <ProgressBar
         android:id="@+id/progressBarSignUp"
@@ -145,7 +145,7 @@
         app:passwordToggleEnabled="true"
         app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
-        <com.umbat.storyappsubmission.view.registration.PasswordEditText
+        <com.umbat.storyappsubmission.ui.registration.PasswordEditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

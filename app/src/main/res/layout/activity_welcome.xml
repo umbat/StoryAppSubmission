@@ -5,7 +5,7 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.registration.welcome.WelcomeActivity">
+    tools:context=".ui.registration.welcome.WelcomeActivity">
 
     <ImageView
         android:id="@+id/imageView"
