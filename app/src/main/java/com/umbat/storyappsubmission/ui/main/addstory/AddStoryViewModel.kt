@@ -15,9 +15,9 @@ class AddStoryViewModel(private val pref: Repository) : ViewModel() {
     val showLoading: LiveData<Boolean> = pref.showLoading
     val toastText: LiveData<String> = pref.toastText
 
-    fun uploadStory(token: String, file: MultipartBody.Part, description: RequestBody) {
+    fun uploadStory(token: String, file: MultipartBody.Part, description: RequestBody, lat: RequestBody?, lon: RequestBody?) {
         viewModelScope.launch {
-            pref.uploadStory(token, file, description)
+            pref.uploadStory(token, file, description, lat, lon)
         }
     }
 

@@ -43,6 +43,15 @@
         app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
         app:layout_constraintTop_toBottomOf="@+id/previewImageView" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/share_location"
+        app:layout_constraintEnd_toEndOf="@+id/btnGallery"
+        app:layout_constraintStart_toStartOf="@+id/btnCamera"
+        app:layout_constraintTop_toBottomOf="@+id/btnCamera" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tl_desc_story"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -53,7 +62,7 @@
         android:hint="@string/story_desc_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCamera">
+        app:layout_constraintTop_toBottomOf="@+id/switchLocation">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_desc_story"

@@ -44,4 +44,6 @@
     <string name="terrain_type">Terrain</string>
     <string name="hybrid_type">Hybrid</string>
     <string name="empty_address">Unknown Address</string>
+    <string name="share_location">Share Your Location</string>
+    <string name="empty_location">No Location</string>
 </resources>

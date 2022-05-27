@@ -98,9 +98,10 @@ class Repository private constructor(
         })
     }
 
-    fun uploadStory(token: String, file: MultipartBody.Part, description: RequestBody) {
+    fun uploadStory(token: String, file: MultipartBody.Part, description: RequestBody, lat: RequestBody?, lon: RequestBody?) {
         _showLoading.value = true
-        val client = apiService.uploadImage(token, file, description)
+        val client = apiService.uploadImage(token, file, description, lat, lon)
+        Log.d("TOKEN", token)
 
         client.enqueue(object : Callback<ActivityResponses.FileUploadResponse> {
             override fun onResponse(
