@@ -1,51 +1,41 @@
 package com.umbat.storyappsubmission.ui.main.maps
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.location.Location
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.DrawableCompat
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
 import com.umbat.storyappsubmission.R
 import com.umbat.storyappsubmission.databinding.ActivityMapsBinding
 import com.umbat.storyappsubmission.model.StoryResponseItem
 import com.umbat.storyappsubmission.ui.ViewModelFactory
-import com.umbat.storyappsubmission.ui.main.home.StoryAdapter
 import com.umbat.storyappsubmission.ui.registration.welcome.WelcomeActivity
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var token: String
-    private lateinit var mapsViewModel: MapsViewModel
     private lateinit var storiesWithLocation: List<StoryResponseItem>
+    private var token = ""
+
+    private val boundsBuilder = LatLngBounds.Builder()
+    private lateinit var viewModelFactory: ViewModelFactory
+    private val mapsViewModel: MapsViewModel by viewModels { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,13 +43,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(this)
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
         setupViewModel()
+        mapsViewModel.getAllStoriesResponse.observe(this) { response ->
+            if (response != null) {
+                storiesWithLocation = response.listStory
+                mapFragment.getMapAsync(this)
+            }
+        }
+
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -70,7 +66,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMapToolbarEnabled = true
 
-        setMapStyle()
+        // Add a marker in Sydney and move the camera
+//        val sydney = LatLng(-34.0, 151.0)
+//        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+//        val dicodingSpace = LatLng(-6.8957643, 107.6338462)
+//        mMap.addMarker(
+//            MarkerOptions()
+//                .position(dicodingSpace)
+//                .title("Dicoding Space")
+//                .snippet("Batik Kumeli No.50")
+//        )
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dicodingSpace, 15f))
+
+        setupLocationFromStories()
         getMyLocation()
     }
 
@@ -78,6 +88,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         menuInflater.inflate(R.menu.map_options, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.normal_type -> {
@@ -110,7 +121,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 getMyLocation()
             }
         }
-
     private fun getMyLocation() {
         if (ContextCompat.checkSelfPermission(
                 this.applicationContext,
@@ -118,84 +128,56 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             mMap.isMyLocationEnabled = true
-            fusedLocationClient.lastLocation.addOnSuccessListener { loc ->
-                if (loc != null) {
-                    setMarker(loc)
-                } else {
-                    Toast.makeText(
-                        this@MapsActivity,
-                        resources.getString(R.string.location_not_found),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
         } else {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
 
-    private fun setMarker(location: Location) {
-        val setLocation = LatLng(location.latitude, location.longitude)
-        mMap.addMarker(
-            MarkerOptions()
-                .position(setLocation)
-                .icon(
-                    vectorToBitmap(R.drawable.ic_baseline_location_on_24,
-                        Color.parseColor("#2D3D4F"), this))
-                .title(getString(R.string.my_location))
-        )
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(setLocation, 17f))
+    private fun setupLocationFromStories() {
+        if (storiesWithLocation.isEmpty()) return
+
+        storiesWithLocation.forEach { story ->
+            val location = LatLng(story.lat, story.lon)
+            val address = getAddressName(location)
+            val marker = mMap.addMarker(
+                MarkerOptions()
+                    .position(location)
+                    .title(address)
+            )
+
+            boundsBuilder.include(location)
+            marker?.showInfoWindow()
+        }
+
+        val bounds: LatLngBounds = boundsBuilder.build()
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10))
     }
 
-    private fun setMapStyle() {
-        try {
-            val success =
-                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
-            if (!success) {
-                Log.e(TAG, "Style parsing failed.")
-            }
-        } catch (exception: Resources.NotFoundException) {
-            Log.e(TAG, "Can't find style. Error: ", exception)
+    private fun getAddressName(latLng: LatLng): String {
+        return try {
+            val geocoder = Geocoder(this)
+            val allAddress = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+            if (allAddress.isEmpty()) getString(R.string.empty_address) else allAddress[0].getAddressLine(
+                0
+            )
+        } catch (e: Exception) {
+            getString(R.string.empty_address)
         }
     }
 
-    private fun vectorToBitmap(@DrawableRes id: Int, @ColorInt color: Int, context: Context): BitmapDescriptor {
-        val vectorDrawable = ResourcesCompat.getDrawable(context.resources, id, null)
-            ?: return BitmapDescriptorFactory.defaultMarker()
-        val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-        DrawableCompat.setTint(vectorDrawable, color)
-        vectorDrawable.draw(canvas)
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
-    }
-
     private fun setupViewModel() {
-        val factory: ViewModelFactory = ViewModelFactory.getInstance(this)
-        mapsViewModel = ViewModelProvider(this, factory)[MapsViewModel::class.java]
-        mapsViewModel.loadState().observe(this@MapsActivity) {
+        viewModelFactory = ViewModelFactory.getInstance(this)
+
+        showLoading()
+        mapsViewModel.loadState().observe(this) {
             token = it.token
             if (!it.isLogin) {
                 intentActivity()
             } else {
-                getStoriesList(token)
+                getStoriesWithLocation(token)
             }
         }
-
-        showLoading()
-    }
-
-    private fun intentActivity() {
-        startActivity(Intent(this@MapsActivity, WelcomeActivity::class.java))
-        finish()
-    }
-
-    private fun getStoriesList(token: String) {
-        mapsViewModel.getStoriesLocation(token)
+        showToast()
     }
 
     private fun showLoading() {
@@ -204,7 +186,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    companion object {
-        private const val TAG = "MapsActivity"
+    private fun showToast() {
+        mapsViewModel.toastText.observe(this@MapsActivity) { toastText ->
+            Toast.makeText(
+                this@MapsActivity, toastText, Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun intentActivity() {
+        startActivity(Intent(this@MapsActivity, WelcomeActivity::class.java))
+    }
+
+    private fun getStoriesWithLocation(token: String) {
+        mapsViewModel.getStoriesWithLocation(token)
     }
 }

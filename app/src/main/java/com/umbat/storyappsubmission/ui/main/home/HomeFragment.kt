@@ -14,8 +14,8 @@ import com.umbat.storyappsubmission.ui.registration.welcome.WelcomeActivity
 class HomeFragment : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val homeViewModel: HomeViewModel by viewModels { viewModelFactory }
     private lateinit var viewModelFactory: ViewModelFactory
+    private val homeViewModel: HomeViewModel by viewModels { viewModelFactory }
     private var token = ""
 
     override fun onCreateView(
@@ -26,23 +26,29 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.apply {
-            rvStory.layoutManager = LinearLayoutManager(requireContext())
-            rvStory.setHasFixedSize(true)
+
+        binding.rvStory.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
         }
 
         setupViewModel()
-        setupAdapter()
 
-        return root
-    }
-
-    private fun setupAdapter() {
         homeViewModel.getAllStoriesResponse.observe(viewLifecycleOwner) { adapter ->
             if (adapter != null) {
-                binding.rvStory.adapter = StoryAdapter(adapter.listStory)
+                binding.rvStory.adapter = StoryAdapter()
             }
         }
+
+        val storyAdapter = StoryAdapter()
+        homeViewModel.loadState().observe(viewLifecycleOwner) { pref ->
+
+            homeViewModel.getStoriesList(pref.token).observe(viewLifecycleOwner) { pagingData ->
+                storyAdapter.submitData(lifecycle, pagingData)
+            }
+        }
+
+        return root
     }
 
     private fun setupViewModel() {

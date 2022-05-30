@@ -51,7 +51,7 @@
         android:text="@string/share_location"
         app:layout_constraintEnd_toEndOf="@+id/btnGallery"
         app:layout_constraintStart_toStartOf="@+id/btnCamera"
-        app:layout_constraintTop_toBottomOf="@+id/btnGallery" />
+        app:layout_constraintTop_toBottomOf="@+id/btnCamera" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tl_desc_story"
@@ -63,7 +63,7 @@
         android:hint="@string/story_desc_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLocation">
+        app:layout_constraintTop_toBottomOf="@+id/switchLocation">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_desc_story"

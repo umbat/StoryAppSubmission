@@ -7,13 +7,14 @@ import com.umbat.storyappsubmission.model.TokenModel
 import com.umbat.storyappsubmission.repo.Repository
 import kotlinx.coroutines.launch
 
-class MapsViewModel(private val pref: Repository) : ViewModel(){
-    val showLoading get() = pref.showLoading
+class MapsViewModel(private val pref: Repository) : ViewModel() {
     val getAllStoriesResponse get() = pref.getAllStoriesResponse
+    val showLoading get() = pref.showLoading
+    val toastText get() = pref.toastText
 
-    fun getStoriesLocation(token: String) {
+    fun getStoriesWithLocation(token: String) {
         viewModelScope.launch {
-            pref.getStoriesLocation(token)
+            pref.getStoriesWithLocation(token)
         }
     }
 

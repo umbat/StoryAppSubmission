@@ -27,14 +27,22 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
+        @Part("lat") lat: RequestBody?,
+        @Part("lon") lon: RequestBody?
     ): Call<ActivityResponses.FileUploadResponse>
 
     @GET("v1/stories")
     fun getStoriesList(
         @Header("Authorization") token: String,
-        @Query("page") page: Int? = null,
-        @Query("size") size: Int? = null,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
         @Query("location") location: Int = 0
+    ): ActivityResponses.GetAllStoriesResponse
+
+    @GET("v1/stories")
+    fun getStoriesWithLocation(
+        @Header("Authorization") token: String,
+        @Query("location") includeLocation: Int = 1
     ): Call<ActivityResponses.GetAllStoriesResponse>
 
 }

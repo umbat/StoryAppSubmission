@@ -44,7 +44,12 @@
     <string name="satellite_type">Satellite</string>
     <string name="terrain_type">Terrain</string>
     <string name="hybrid_type">Hybrid</string>
+
     <string name="my_location">My Location</string>
     <string name="location_not_found">Location Not Found</string>
     <string name="share_location">Share My Location</string>
+
+    <string name="empty_address">Unknown Address</string>
+    <string name="empty_location">No Location</string>
+
 </resources>

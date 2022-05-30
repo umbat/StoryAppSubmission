@@ -4,8 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
+import androidx.paging.*
 import com.umbat.storyappsubmission.api.ActivityResponses
 import com.umbat.storyappsubmission.api.ApiService
+import com.umbat.storyappsubmission.data.StoryPagingSource
+import com.umbat.storyappsubmission.model.StoryResponseItem
 import com.umbat.storyappsubmission.model.TokenModel
 import com.umbat.storyappsubmission.model.UserPreference
 import okhttp3.MultipartBody
@@ -98,9 +101,10 @@ class Repository private constructor(
         })
     }
 
-    fun uploadStory(token: String, file: MultipartBody.Part, description: RequestBody) {
+    fun uploadStory(token: String, file: MultipartBody.Part, description: RequestBody, lat: RequestBody?, lon: RequestBody?) {
         _showLoading.value = true
-        val client = apiService.uploadImage(token, file, description)
+        val client = apiService.uploadImage(token, file, description, lat, lon)
+        Log.d("TOKEN", token)
 
         client.enqueue(object : Callback<ActivityResponses.FileUploadResponse> {
             override fun onResponse(
@@ -128,9 +132,46 @@ class Repository private constructor(
         )
     }
 
-    fun getStoriesList(token: String) {
+    fun getStoriesList(token: String): LiveData<PagingData<StoryResponseItem>> {
+//        _showLoading.value = true
+//        val client = apiService.getStoriesList(token)
+//        Log.d("TOKEN", token)
+
+//        client.enqueue(object : Callback<ActivityResponses.GetAllStoriesResponse> {
+//            override fun onResponse(
+//                call: Call<ActivityResponses.GetAllStoriesResponse>,
+//                response: Response<ActivityResponses.GetAllStoriesResponse>
+//            ) {
+//                _showLoading.value = false
+//                if (response.isSuccessful && response.body() != null) {
+//                    _getAllStoriesResponse.value = response.body()
+//                } else {
+//                    _toastText.value = response.message().toString()
+//                    Log.e(
+//                        TAG,
+//                        "onFailure: ${response.message()}, ${response.body()?.message.toString()}"
+//                    )
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<ActivityResponses.GetAllStoriesResponse>, t: Throwable) {
+//                _toastText.value = t.message.toString()
+//                Log.e(TAG, "onFailure: ${t.message.toString()}")
+//            }
+//        })
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(apiService, setupToken(token))
+            }
+        ).liveData
+    }
+
+    fun getStoriesWithLocation(token: String) {
         _showLoading.value = true
-        val client = apiService.getStoriesList(token)
+        val client = apiService.getStoriesWithLocation(token)
         Log.d("TOKEN", token)
 
         client.enqueue(object : Callback<ActivityResponses.GetAllStoriesResponse> {
@@ -157,34 +198,7 @@ class Repository private constructor(
         })
     }
 
-    fun getStoriesLocation(token: String) {
-        _showLoading.value = true
-        val client = apiService.getStoriesList("Bearer $token", location = 1)
-        Log.d("TOKEN", token)
-
-        client.enqueue(object : Callback<ActivityResponses.GetAllStoriesResponse> {
-            override fun onResponse(
-                call: Call<ActivityResponses.GetAllStoriesResponse>,
-                response: Response<ActivityResponses.GetAllStoriesResponse>
-            ) {
-                _showLoading.value = false
-                if (response.isSuccessful && response.body() != null) {
-                    _getAllStoriesResponse.value = response.body()
-                } else {
-                    _toastText.value = response.message().toString()
-                    Log.e(
-                        TAG,
-                        "onFailure: ${response.message()}, ${response.body()?.message.toString()}"
-                    )
-                }
-            }
-
-            override fun onFailure(call: Call<ActivityResponses.GetAllStoriesResponse>, t: Throwable) {
-                _toastText.value = t.message.toString()
-                Log.e(TAG, "onFailure: ${t.message.toString()}")
-            }
-        })
-    }
+    fun setupToken(token: String): String = "Bearer $token"
 
     fun loadState(): LiveData<TokenModel> {
         return pref.loadState().asLiveData()
