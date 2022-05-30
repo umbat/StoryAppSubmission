@@ -4,8 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
+import androidx.paging.*
 import com.umbat.storyappsubmission.api.ActivityResponses
 import com.umbat.storyappsubmission.api.ApiService
+import com.umbat.storyappsubmission.data.StoryPagingSource
+import com.umbat.storyappsubmission.model.StoryModel
 import com.umbat.storyappsubmission.model.TokenModel
 import com.umbat.storyappsubmission.model.UserPreference
 import okhttp3.MultipartBody
@@ -129,33 +132,41 @@ class Repository private constructor(
         )
     }
 
-    fun getStoriesList(token: String) {
-        _showLoading.value = true
-        val client = apiService.getStoriesList(token)
-        Log.d("TOKEN", token)
+    fun getStoriesList(token: String): LiveData<PagingData<StoryModel>> {
+//        _showLoading.value = true
+//        val client = apiService.getStoriesList(token)
+//        Log.d("TOKEN", token)
 
-        client.enqueue(object : Callback<ActivityResponses.GetAllStoriesResponse> {
-            override fun onResponse(
-                call: Call<ActivityResponses.GetAllStoriesResponse>,
-                response: Response<ActivityResponses.GetAllStoriesResponse>
-            ) {
-                _showLoading.value = false
-                if (response.isSuccessful && response.body() != null) {
-                    _getAllStoriesResponse.value = response.body()
-                } else {
-                    _toastText.value = response.message().toString()
-                    Log.e(
-                        TAG,
-                        "onFailure: ${response.message()}, ${response.body()?.message.toString()}"
-                    )
-                }
+//        client.enqueue(object : Callback<ActivityResponses.GetAllStoriesResponse> {
+//            override fun onResponse(
+//                call: Call<ActivityResponses.GetAllStoriesResponse>,
+//                response: Response<ActivityResponses.GetAllStoriesResponse>
+//            ) {
+//                _showLoading.value = false
+//                if (response.isSuccessful && response.body() != null) {
+//                    _getAllStoriesResponse.value = response.body()
+//                } else {
+//                    _toastText.value = response.message().toString()
+//                    Log.e(
+//                        TAG,
+//                        "onFailure: ${response.message()}, ${response.body()?.message.toString()}"
+//                    )
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<ActivityResponses.GetAllStoriesResponse>, t: Throwable) {
+//                _toastText.value = t.message.toString()
+//                Log.e(TAG, "onFailure: ${t.message.toString()}")
+//            }
+//        })
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(apiService, setupToken(token))
             }
-
-            override fun onFailure(call: Call<ActivityResponses.GetAllStoriesResponse>, t: Throwable) {
-                _toastText.value = t.message.toString()
-                Log.e(TAG, "onFailure: ${t.message.toString()}")
-            }
-        })
+        ).liveData
     }
 
     fun getStoriesWithLocation(token: String) {
@@ -186,6 +197,8 @@ class Repository private constructor(
             }
         })
     }
+
+    fun setupToken(token: String): String = "Bearer $token"
 
     fun loadState(): LiveData<TokenModel> {
         return pref.loadState().asLiveData()

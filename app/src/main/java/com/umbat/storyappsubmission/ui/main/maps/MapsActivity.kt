@@ -66,20 +66,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMapToolbarEnabled = true
 
-        // Add a marker in Sydney and move the camera
-//        val sydney = LatLng(-34.0, 151.0)
-//        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-
-//        val dicodingSpace = LatLng(-6.8957643, 107.6338462)
-//        mMap.addMarker(
-//            MarkerOptions()
-//                .position(dicodingSpace)
-//                .title("Dicoding Space")
-//                .snippet("Batik Kumeli No.50")
-//        )
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dicodingSpace, 15f))
-
         getMyLocation()
         setupLocationFromStories()
     }
