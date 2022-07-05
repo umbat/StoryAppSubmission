@@ -51,5 +51,6 @@
 
     <string name="empty_address">Unknown Address</string>
     <string name="empty_location">No Location</string>
+    <string name="input_your_location">Input Your Location</string>
 
 </resources>

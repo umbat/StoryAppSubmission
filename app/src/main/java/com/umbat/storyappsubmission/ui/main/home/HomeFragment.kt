@@ -1,7 +1,9 @@
 package com.umbat.storyappsubmission.ui.main.home
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -34,13 +36,8 @@ class HomeFragment : Fragment() {
 
         setupViewModel()
 
-        homeViewModel.getAllStoriesResponse.observe(viewLifecycleOwner) { adapter ->
-            if (adapter != null) {
-                binding.rvStory.adapter = StoryAdapter()
-            }
-        }
-
         val storyAdapter = StoryAdapter()
+        binding.rvStory.adapter = storyAdapter
         homeViewModel.loadState().observe(viewLifecycleOwner) { pref ->
 
             homeViewModel.getStoriesList(pref.token).observe(viewLifecycleOwner) { pagingData ->

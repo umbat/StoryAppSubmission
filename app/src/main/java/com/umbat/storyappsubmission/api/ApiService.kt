@@ -23,7 +23,7 @@ interface ApiService {
 
     @Multipart
     @POST("v1/stories")
-    fun uploadImage(
+    suspend fun uploadImage(
         @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
@@ -32,7 +32,7 @@ interface ApiService {
     ): Call<ActivityResponses.FileUploadResponse>
 
     @GET("v1/stories")
-    fun getStoriesList(
+    suspend fun getStoriesList(
         @Header("Authorization") token: String,
         @Query("page") page: Int,
         @Query("size") size: Int,

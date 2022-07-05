@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
@@ -31,6 +32,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import com.umbat.storyappsubmission.databinding.FragmentAddStoryBinding
 import okhttp3.RequestBody.Companion.toRequestBody
+import kotlin.random.Random
 
 class AddStoryFragment : Fragment() {
     private var _binding: FragmentAddStoryBinding? = null
@@ -66,15 +68,10 @@ class AddStoryFragment : Fragment() {
 
         binding.btnCamera.setOnClickListener { startCameraX() }
         binding.btnGallery.setOnClickListener { startGallery() }
+        binding.ibLocation.setOnClickListener { getLocationNow() }
         binding.btnUpload.setOnClickListener { uploadStory() }
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        binding.switchLocation.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                getMyLocation()
-            } else {
-                null
-            }
-        }
+
 
         return root
     }
@@ -99,13 +96,6 @@ class AddStoryFragment : Fragment() {
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(requireActivity(), it) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun checkPermission(permission: String): Boolean {
-        return ContextCompat.checkSelfPermission(
-            requireContext(),
-            permission
-        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun startCameraX() {
@@ -151,35 +141,32 @@ class AddStoryFragment : Fragment() {
         }
     }
 
-//    private fun getMyLocation() {
-//        if (ContextCompat.checkSelfPermission(
-//                requireContext(),
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-//                if (location != null) {
-//                    this.location = location
-//                } else {
-//                    binding.switchLocation.isChecked = false
-//                    Toast.makeText(
-//                        requireContext(), getString(R.string.empty_location), Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//            }
-//        } else {
-//            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-//        }
-//    }
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> getLocationNow()
+            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> getLocationNow()
+            else -> {}
+        }
+    }
 
-    private fun getMyLocation() {
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun getLocationNow() {
         if (
             checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
             checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
         ) {
-            fusedLocationClient.lastLocation.addOnSuccessListener { loc: Location? ->
-                if (loc != null) {
-                    this.location = loc
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    val addressName = getAddressName(LatLng(location.latitude, location.longitude))
+                    binding.etLocation.setText(addressName)
                 } else {
                     Toast.makeText(
                         requireContext(), getString(R.string.empty_location), Toast.LENGTH_SHORT
@@ -195,23 +182,38 @@ class AddStoryFragment : Fragment() {
             )
         }
     }
-//    private val requestPermissionLauncher =
-//        registerForActivityResult(
-//            ActivityResultContracts.RequestPermission()
-//        ) { isGranted: Boolean ->
-//            if (isGranted) {
-//                getMyLocation()
-//            }
-//        }
 
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        when {
-            permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> getMyLocation()
-            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> getMyLocation()
-            else -> {}
+    private fun getAddressName(latLng: LatLng): String {
+        return try {
+            val geocoder = Geocoder(requireContext())
+            val allAddress = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+            if (allAddress.isEmpty()) getString(R.string.empty_address) else allAddress[0].getAddressLine(
+                0
+            )
+        } catch (e: Exception) {
+            getString(R.string.empty_address)
         }
+    }
+
+    private fun addressToCoordinate(locationName: String): LatLng {
+        return try {
+            val randomLatitude = randomCoordinate()
+            val randomLongitude = randomCoordinate()
+
+            val geocoder = Geocoder(requireContext())
+            val allLocation = geocoder.getFromLocationName(locationName, 1)
+            if (allLocation.isEmpty()) {
+                LatLng(randomLatitude, randomLongitude)
+            } else {
+                LatLng(allLocation[0].latitude, allLocation[0].longitude)
+            }
+        } catch (e: Exception) {
+            LatLng(0.0, 0.0)
+        }
+    }
+
+    private fun randomCoordinate(): Double {
+        return Random.nextDouble(15.0, 100.0)
     }
 
     private fun uploadStory() {

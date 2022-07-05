@@ -30,7 +30,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
-    private lateinit var storiesWithLocation: List<StoryResponseItem>
+    private var storiesWithLocation: List<StoryResponseItem> = emptyList()
     private var token = ""
 
     private val boundsBuilder = LatLngBounds.Builder()
@@ -80,8 +80,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 //        )
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dicodingSpace, 15f))
 
-        setupLocationFromStories()
         getMyLocation()
+        setupLocationFromStories()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
