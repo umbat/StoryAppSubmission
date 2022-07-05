@@ -43,40 +43,15 @@
         app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
         app:layout_constraintTop_toBottomOf="@+id/previewImageView" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switchLocation"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/share_location"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:hint="@string/input_your_location"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:layout_constraintEnd_toStartOf="@id/ib_location"
-        app:layout_constraintStart_toStartOf="@+id/btnCamera"
-        app:layout_constraintTop_toBottomOf="@id/btnCamera">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:scrollbars="horizontal" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <ImageButton
-        android:id="@+id/ib_location"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/ic_baseline_location_on_24"
-        android:backgroundTint="?attr/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@id/switchLocation"
         app:layout_constraintEnd_toEndOf="@+id/btnGallery"
-        app:layout_constraintTop_toTopOf="@id/switchLocation" />
+        app:layout_constraintStart_toStartOf="@+id/btnCamera"
+        app:layout_constraintTop_toBottomOf="@+id/btnCamera" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tl_desc_story"

@@ -68,7 +68,13 @@ class AddStoryFragment : Fragment() {
 
         binding.btnCamera.setOnClickListener { startCameraX() }
         binding.btnGallery.setOnClickListener { startGallery() }
-        binding.ibLocation.setOnClickListener { getLocationNow() }
+        binding.switchLocation.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                getMyLocation()
+            } else {
+                null
+            }
+        }
         binding.btnUpload.setOnClickListener { uploadStory() }
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
@@ -145,8 +151,8 @@ class AddStoryFragment : Fragment() {
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         when {
-            permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> getLocationNow()
-            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> getLocationNow()
+            permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> getMyLocation()
+            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> getMyLocation()
             else -> {}
         }
     }
@@ -158,15 +164,14 @@ class AddStoryFragment : Fragment() {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun getLocationNow() {
+    private fun getMyLocation() {
         if (
             checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
             checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
         ) {
-            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    val addressName = getAddressName(LatLng(location.latitude, location.longitude))
-                    binding.etLocation.setText(addressName)
+            fusedLocationClient.lastLocation.addOnSuccessListener { loc: Location? ->
+                if (loc != null) {
+                    this.location = loc
                 } else {
                     Toast.makeText(
                         requireContext(), getString(R.string.empty_location), Toast.LENGTH_SHORT
@@ -181,39 +186,6 @@ class AddStoryFragment : Fragment() {
                 )
             )
         }
-    }
-
-    private fun getAddressName(latLng: LatLng): String {
-        return try {
-            val geocoder = Geocoder(requireContext())
-            val allAddress = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-            if (allAddress.isEmpty()) getString(R.string.empty_address) else allAddress[0].getAddressLine(
-                0
-            )
-        } catch (e: Exception) {
-            getString(R.string.empty_address)
-        }
-    }
-
-    private fun addressToCoordinate(locationName: String): LatLng {
-        return try {
-            val randomLatitude = randomCoordinate()
-            val randomLongitude = randomCoordinate()
-
-            val geocoder = Geocoder(requireContext())
-            val allLocation = geocoder.getFromLocationName(locationName, 1)
-            if (allLocation.isEmpty()) {
-                LatLng(randomLatitude, randomLongitude)
-            } else {
-                LatLng(allLocation[0].latitude, allLocation[0].longitude)
-            }
-        } catch (e: Exception) {
-            LatLng(0.0, 0.0)
-        }
-    }
-
-    private fun randomCoordinate(): Double {
-        return Random.nextDouble(15.0, 100.0)
     }
 
     private fun uploadStory() {
