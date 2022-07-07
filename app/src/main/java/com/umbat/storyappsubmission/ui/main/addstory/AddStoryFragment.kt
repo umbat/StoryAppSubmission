@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
-import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
@@ -21,7 +20,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
 import com.umbat.storyappsubmission.R
 import com.umbat.storyappsubmission.ui.ViewModelFactory
 import okhttp3.MediaType.Companion.toMediaType
@@ -32,7 +30,6 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import com.umbat.storyappsubmission.databinding.FragmentAddStoryBinding
 import okhttp3.RequestBody.Companion.toRequestBody
-import kotlin.random.Random
 
 class AddStoryFragment : Fragment() {
     private var _binding: FragmentAddStoryBinding? = null
@@ -199,8 +196,8 @@ class AddStoryFragment : Fragment() {
                     file.name,
                     requestImageFile
                 )
-                val lat: RequestBody? = null
-                val lon: RequestBody? = null
+                val lat = location?.latitude
+                val lon = location?.longitude
                 uploadResponse(
                     it.token,
                     imageMultipart,
